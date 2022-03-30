@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+.vs/Practica1_MPI/v16/Browse.VC.opendb
+.vs/Practica1_MPI/v16/Browse.VC.db-shm
+.vs/Practica1_MPI/v16/Browse.VC.db
+.vs/Practica1_MPI/v16/Browse.VC.db-wal
