@@ -108,6 +108,10 @@ int ciphered[nLines][nCharsPerLine] = { //[9][33] - 2 rotores
 	{57,56,54,114,117,131,49,116,131,123,57,124,137,139,65,151,141,140,73,153,150,150,153,167,168,87,173,170,93,162,176,176,170},
 };
 
+
+//Explicación: el procso 0 va a quedarse en bucle esperando y rellenando en el índice correspondiente con la línea descifrada que reciba. Los otros procesos
+//tienen un rango de claves asociado y miran solo esas claves. Cada vez que descifren una línea, envían el índice de esa línea y la línea como tal (posible pack, unpack)
+//Al final, solo el proceso 0 imprime el resultado.
 void printNumbersAsString(int lines[nLines][nCharsPerLine])
 {
 	for (int idx = 0; idx < nLines; idx++)
@@ -196,10 +200,90 @@ void enigma()
 	printf("\n");
 }
 
+void enigma_modified(int rank, int size)
+{
+	int totalKeys = (int)pow(10, nRotors) - (int)pow(10,nRotors-1);
+	int keyRange = 0;
+	int keyDiv = (int)(totalKeys / (size-1));
+	int result[nLines][nCharsPerLine];
+	if (rank == size - 1) {
+		keyRange = keyDiv+ (totalKeys % (size-1));
+	}
+	else {
+		keyRange = keyDiv;
+	}
+	printf("Totalkeys: %d\n",totalKeys);
+	printf("Process %d  %d\n: ",rank, keyRange);
+	
+	int initKey = rank * keyDiv;
+	int endKey = initKey + keyRange;
+	if (rank == 0) {
+		printf("ESTO ES LA ENTRADA: \n");
+		printNumbersAsString(ciphered);
+		printf("\n");
+		printf("\n");
+	}
+	if (rank != 0) {
+		printf("DESCIFRANDO...: \n");
+		int deciphered[nLines][nCharsPerLine];
+		for (int idx = 0; idx < nLines; idx++)
+		{
+			for (int lineKey = initKey; lineKey < endKey; lineKey++)
+			{
+				int* p_deciphered = decipher(ciphered[idx], lineKey);
+
+				char decipheredLine[nCharsPerLine];
+				for (int idx = 0; idx < nCharsPerLine; idx++)
+				{
+					decipheredLine[idx] = p_deciphered[idx];
+				}
+
+				char stringKey[nRotors + 1];
+				sprintf_s(stringKey, "%d", lineKey);
+				if (!strncmp(stringKey, decipheredLine, nRotors))
+				{
+					for (int idx2 = 0; idx2 < nCharsPerLine; idx2++)
+					{
+						deciphered[idx][idx2] = decipheredLine[idx2];
+					}
+
+					printf("Descifrada linea %d con clave %d\n", idx, lineKey);
+					break;
+				}
+			}
+		}
+	}
+	else {
+		int numLines = 0;
+		while (numLines < nLines) {
+			
+		}
+	}
+
+	if (rank == 0) {
+		printf("\n");
+		printf("ESTO ES LA SALIDA:\n");
+		printNumbersAsString(result);
+		fflush(stdout);
+		printf("\n");
+		printf("\n");
+
+		
+		
+	}
+	
+	
+}
+
+
 int main(int argc, char* argv[])
 {
-
-	enigma();
-
+	int rank, size;
+	MPI_Init(NULL, NULL);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	enigma_modified(rank, size);
+	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Finalize();
 	return 0;
 }
