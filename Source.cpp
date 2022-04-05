@@ -207,7 +207,7 @@ void enigma_2(int rank, int size)
 	int keyDiv = (int)(totalKeys / (size - 1));
 	int result[nLines][nCharsPerLine];
 	int lineBuffer[nCharsPerLine + 1];
-	int bufferSize = nCharsPerLine +1;
+	int bufferSize = nCharsPerLine + 1;
 
 	if (rank == size - 1) {
 		keyRange = keyDiv + totalKeys % (keyDiv);
@@ -225,7 +225,7 @@ void enigma_2(int rank, int size)
 	else {
 		int initKey = (rank - 1) * keyDiv + (int)(pow(10, nRotors - 1));
 		int endKey = initKey + keyRange;
-	
+
 		//printf("DESCIFRANDO...: \n");
 		int deciphered[nLines][nCharsPerLine];
 		for (int idx = 0; idx < nLines; idx++)
@@ -261,7 +261,7 @@ void enigma_2(int rank, int size)
 	}
 
 
-	
+
 
 	if (rank == 0) {
 		int lines = 0;
@@ -289,7 +289,22 @@ int main(int argc, char* argv[])
 	MPI_Init(NULL, NULL);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+	int* indexesPerProcess = (int*)malloc(sizeof(int) * nLines / size);
+	int linesPerProcess = nLines / size;
+	int indexFirstLine = linesPerProcess * rank;
+	if (rank != 0) {
+		for (size_t i = 0; i < nLines; i++)
+		{
+			if (indexFirstLine + i + 1 <= nLines)
+				indexesPerProcess[i] = indexFirstLine + i;
+		}
+	}
+
 	enigma_2(rank, size);
+
+
+
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Finalize();
 	return 0;
