@@ -209,11 +209,17 @@ void enigma_2(int rank, int size)
 	int lineBuffer[nCharsPerLine + 1];
 	int bufferSize = nCharsPerLine +1;
 
-	if (rank == size - 1) {
-		keyRange = keyDiv + totalKeys % (keyDiv);
+	if ((size - 1) > totalKeys) {
+		keyDiv = 1;
+		keyRange = 1;
 	}
 	else {
-		keyRange = keyDiv;
+		if (rank == size - 1) {
+			keyRange = keyDiv + totalKeys % (size-1);
+		}
+		else {
+			keyRange = keyDiv;
+		}
 	}
 
 	if (rank == 0) {
@@ -223,45 +229,45 @@ void enigma_2(int rank, int size)
 		printf("\n");
 	}
 	else {
-		int initKey = (rank - 1) * keyDiv + (int)(pow(10, nRotors - 1));
-		int endKey = initKey + keyRange;
-	
-		//printf("DESCIFRANDO...: \n");
-		int deciphered[nLines][nCharsPerLine];
-		for (int idx = 0; idx < nLines; idx++)
-		{
-			for (int lineKey = initKey; lineKey < endKey; lineKey++)
+		if (rank < totalKeys + 1) {
+			
+			int initKey = (rank - 1) * keyDiv + (int)(pow(10, nRotors - 1));
+			int endKey = initKey + keyRange;
+			//printf("DESCIFRANDO...: \n");
+			int deciphered[nLines][nCharsPerLine];
+			for (int idx = 0; idx < nLines; idx++)
 			{
-				int* p_deciphered = decipher(ciphered[idx], lineKey);
-
-				char decipheredLine[nCharsPerLine];
-				for (int idx = 0; idx < nCharsPerLine; idx++)
+				for (int lineKey = initKey; lineKey < endKey; lineKey++)
 				{
-					decipheredLine[idx] = p_deciphered[idx];
-				}
+					int* p_deciphered = decipher(ciphered[idx], lineKey);
 
-				char stringKey[nRotors + 1];
-				sprintf_s(stringKey, "%d", lineKey);
-				if (!strncmp(stringKey, decipheredLine, nRotors))
-				{
-					for (int idx2 = 0; idx2 < nCharsPerLine; idx2++)
+					char decipheredLine[nCharsPerLine];
+					for (int idx = 0; idx < nCharsPerLine; idx++)
 					{
-						deciphered[idx][idx2] = decipheredLine[idx2];
+						decipheredLine[idx] = p_deciphered[idx];
 					}
-					//printf("Descifrada linea %d con clave %d\n", idx, lineKey);
-					lineBuffer[0] = idx;
-					for (int i = 0; i < nCharsPerLine; ++i) {
-						lineBuffer[i + 1] = deciphered[idx][i];
+
+					char stringKey[nRotors + 1];
+					sprintf_s(stringKey, "%d", lineKey);
+					if (!strncmp(stringKey, decipheredLine, nRotors))
+					{
+						for (int idx2 = 0; idx2 < nCharsPerLine; idx2++)
+						{
+							deciphered[idx][idx2] = decipheredLine[idx2];
+						}
+						printf("Descifrada linea %d con clave %d\n", idx, lineKey);
+						fflush(stdout);
+						lineBuffer[0] = idx;
+						for (int i = 0; i < nCharsPerLine; ++i) {
+							lineBuffer[i + 1] = deciphered[idx][i];
+						}
+						MPI_Send(lineBuffer, bufferSize, MPI_INT, 0, 0, MPI_COMM_WORLD);
+						break;
 					}
-					MPI_Send(lineBuffer, bufferSize, MPI_INT, 0, 0, MPI_COMM_WORLD);
-					break;
 				}
 			}
 		}
 	}
-
-
-	
 
 	if (rank == 0) {
 		int lines = 0;
