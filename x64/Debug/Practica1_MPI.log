@@ -1,4 +1,4 @@
 ﻿  Source.cpp
-\\10.96.11.5\Home_VDI$\m.buenol.2018\Desktop\PracsCAP\Prac1\Source.cpp(138,15): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-\\10.96.11.5\Home_VDI$\m.buenol.2018\Desktop\PracsCAP\Prac1\Source.cpp(154): warning C4172: devolución de dirección de la variable local o temporal: rawData
+\\10.96.11.5\Home_VDI$\m.buenol.2018\Desktop\PracsCAP\Prac1\Source.cpp(142,15): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+\\10.96.11.5\Home_VDI$\m.buenol.2018\Desktop\PracsCAP\Prac1\Source.cpp(158): warning C4172: devolución de dirección de la variable local o temporal: rawData
   Practica1_MPI.vcxproj -> \\10.96.11.5\Home_VDI$\m.buenol.2018\Desktop\PracsCAP\Prac1\x64\Debug\Practica1_MPI.exe
