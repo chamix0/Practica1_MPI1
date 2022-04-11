@@ -1,2 +1,2 @@
-D:\documentos\github\Practica1_MPI\x64\Debug\Practica1_MPI.exe
 \\10.96.11.5\Home_VDI$\m.buenol.2018\Desktop\PracsCAP\Prac1\x64\Debug\Practica1_MPI.exe
+D:\documentos\github\Practica1_MPI\x64\Debug\Practica1_MPI.exe
