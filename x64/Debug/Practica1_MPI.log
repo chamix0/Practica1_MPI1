@@ -1,7 +1,7 @@
 ﻿  Source.cpp
 D:\documentos\github\Practica1_MPI\Source.cpp(170,15): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
 D:\documentos\github\Practica1_MPI\Source.cpp(320,88): warning C4267: 'argumento': conversión de 'size_t' a 'int'; posible pérdida de datos
-D:\documentos\github\Practica1_MPI\Source.cpp(334,52): warning C4244: 'argumento': conversión de 'float' a 'size_t'; posible pérdida de datos
-D:\documentos\github\Practica1_MPI\Source.cpp(335,22): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+D:\documentos\github\Practica1_MPI\Source.cpp(338,52): warning C4244: 'argumento': conversión de 'float' a 'size_t'; posible pérdida de datos
+D:\documentos\github\Practica1_MPI\Source.cpp(339,22): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
 D:\documentos\github\Practica1_MPI\Source.cpp(186): warning C4172: devolución de dirección de la variable local o temporal: rawData
   Practica1_MPI.vcxproj -> D:\documentos\github\Practica1_MPI\x64\Debug\Practica1_MPI.exe
