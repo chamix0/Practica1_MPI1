@@ -279,7 +279,6 @@ void distributeLinesPerProcess(int rank, int size, int* indexesPerProcess, int l
 		//printf("\n");
 	}
 	else {
-
 		int indexFirstLine = linesPerProcess * (rank - 1);
 		//printf("Im the process %d\n", rank);
 		int j = 0;
@@ -375,8 +374,7 @@ int main(int argc, char* argv[])
 		printf("MPI : %f \n", distributed_elapsedTime);
 
 	}
-
-
+	
 	indexesPerProcess = NULL;
 	decipheredLines = NULL;
 	MPI_Barrier(MPI_COMM_WORLD);
