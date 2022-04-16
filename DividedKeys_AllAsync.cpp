@@ -260,7 +260,6 @@ void enigma(int rank, int size)
 	}
 	
 	if (rank == 0) {
-		receivedFlag = 1;
 		while (lines < nLines) {
 			int index = 0;
 			int recvBuffer[nCharsPerLine + 1];
