@@ -1,4 +1,4 @@
-﻿  DividedPerLinesAllAsync.cpp
-D:\documentos\github\Practica1_MPI\DividedPerLinesAllAsync.cpp(151,15): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-D:\documentos\github\Practica1_MPI\DividedPerLinesAllAsync.cpp(167): warning C4172: devolución de dirección de la variable local o temporal: rawData
+﻿  DividedKeys_MS_sync.cpp
+D:\documentos\github\Practica1_MPI\DividedKeys_MS_sync.cpp(156,15): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+D:\documentos\github\Practica1_MPI\DividedKeys_MS_sync.cpp(172): warning C4172: devolución de dirección de la variable local o temporal: rawData
   Practica1_MPI.vcxproj -> D:\documentos\github\Practica1_MPI\x64\Debug\Practica1_MPI.exe

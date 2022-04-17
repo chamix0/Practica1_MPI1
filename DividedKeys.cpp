@@ -3,7 +3,7 @@
 
 #define nLines 9			//Número de filas de los textos cifrados
 #define nCharsPerLine 33	//Número de caracteres en cada fila de los textos cifrados
-#define nRotors 2			//Número de rotores de enigma para cifrar y descifrar
+#define nRotors 5			//Número de rotores de enigma para cifrar y descifrar
 
 /*int ciphered[nLines][nCharsPerLine] = { //[51][155] 8 rotores
 	{92,94,107,113,126,129,141,148,147,183,228,158,250,246,255,273,198,286,279,302,299,320,258,254,349,339,278,366,376,371,393,387,404,418,342,415,358,446,439,464,455,474,482,483,498,430,508,528,519,539,539,565,565,576,577,510,584,591,617,611,618,558,645,652,582,635,646,647,614,692,709,720,646,719,662,746,743,768,765,771,710,786,791,818,807,833,827,850,774,866,869,798,875,902,906,912,903,913,938,862,950,957,973,963,984,910,1001,1006,1003,1009,1034,1040,1051,1051,982,1060,1067,1071,1098,1107,1112,1107,1129,1054,1141,1140,1078,1123,1131,1141,1110,1201,1199,1205,1220,1215,1234,1249,1174,1265,1269,1198,1271,1297,1222,1314,1317,1246,1327,1339,1350,1360,1365,1380,1371},
@@ -207,7 +207,7 @@ void enigma_2(int rank, int size)
 	int keyDiv = (int)(totalKeys / (size - 1));
 	int result[nLines][nCharsPerLine];
 	int lineBuffer[nCharsPerLine + 1];
-	int bufferSize = nCharsPerLine +1;
+	int bufferSize = nCharsPerLine + 1;
 
 	if ((size - 1) > totalKeys) {
 		keyDiv = 1;
@@ -215,7 +215,7 @@ void enigma_2(int rank, int size)
 	}
 	else {
 		if (rank == size - 1) {
-			keyRange = keyDiv + totalKeys % (size-1);
+			keyRange = keyDiv + totalKeys % (size - 1);
 		}
 		else {
 			keyRange = keyDiv;
@@ -230,7 +230,7 @@ void enigma_2(int rank, int size)
 	}
 	else {
 		if (rank < totalKeys + 1) {
-			
+
 			int initKey = (rank - 1) * keyDiv + (int)(pow(10, nRotors - 1));
 			int endKey = initKey + keyRange;
 			//printf("DESCIFRANDO...: \n");
@@ -291,12 +291,25 @@ void enigma_2(int rank, int size)
 
 int main(int argc, char* argv[])
 {
+	clock_t startD, endD;
+	double distributed_elapsedTime;
 	int rank, size;
 	MPI_Init(NULL, NULL);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	enigma_2(rank, size);
-	MPI_Barrier(MPI_COMM_WORLD);
+	for (size_t i = 0; i < 5; i++)
+	{
+		startD = clock();
+		enigma_2(rank, size);
+		endD = clock();
+		if (rank == 0)
+		{
+			distributed_elapsedTime = ((double)(endD - startD)) / CLOCKS_PER_SEC;
+			printf("%f \n", distributed_elapsedTime);
+		}
+		MPI_Barrier(MPI_COMM_WORLD);
+	}
 	MPI_Finalize();
+
 	return 0;
 }
